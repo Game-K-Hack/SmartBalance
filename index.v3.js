@@ -4,7 +4,7 @@
 // @version      2025-01-09
 // @description  try to take over the world!
 // @author       Game_K
-// @match        https://portail-rh.algam.net/smartw080/srh/smartrh/index.html
+// @match        https://portail-rh.algam.net/smartw080/srh/smartrh/index.html*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=algam.net
 // @grant        none
 // ==/UserScript==
@@ -211,7 +211,7 @@
         document.querySelector(`div[class="cs-dashboard-content"]`).appendChild(elm);
     }
 
-    function executeWhenElementCreated() {
+    function executeWhenElementCreated(observer) {
         boxhtml(-1, -1, -1);
         let d = gettime();
         if (Object.keys(d).includes("error") && Object.keys(d).includes("codeError")) {
@@ -277,21 +277,30 @@
             // }
         }
         boxhtml(sworkedtoday, sbalance, sidealout);
+        observer.disconnect();
     }
 
-    const targetNode = document.body;
-    const config = { childList: true, subtree: true };
-    const observer = new MutationObserver((mutationsList, observer) => {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                if (document.querySelector('article[code="congeGta"] div.conge-container[class="conge-container"] div[class="conge-color card"] svg g path')) {
-                    executeWhenElementCreated();
-                    setTimeout(observer.disconnect(), 5000);
+    function initializeObserver() {
+        const targetNode = document.body;
+        const config = { childList: true, subtree: true };
+        const observer = new MutationObserver((mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    if (document.querySelector('article[code="congeGta"] div.conge-container[class="conge-container"] div[class="conge-color card"] svg g path')) {
+                        setTimeout(() => {
+                            executeWhenElementCreated(observer);
+                        }, 100);
+                    }
                 }
             }
-        }
-    });
+        });
+        observer.observe(targetNode, config);
+    }
 
-    observer.observe(targetNode, config);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeObserver);
+    } else {
+        initializeObserver();
+    }
 
 })();
