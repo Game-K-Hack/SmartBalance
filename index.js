@@ -138,9 +138,9 @@
         const formattedMinutes = String(minutes);
         const sh = hours > 1 ? "s": "";
         const sm = minutes > 1 ? "s": "";
-        if (hours > 0) {
+        if (hours != 0) {
             return `${formattedHours} heure${sh} et ${formattedMinutes} minute${sm}`;
-        } else if (minutes > 0) {
+        } else if (minutes != 0) {
             return `${formattedMinutes} minute${sm}`;
         } else {
             return `Pas de temps`;
