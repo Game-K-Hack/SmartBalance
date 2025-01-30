@@ -28,7 +28,11 @@
 
 <p align="center">
   <a href="https://github.com/Game-K-Hack/SmartBalance/releases/download/1.0/SmartBalance.xpi">
-    <img src="https://img.shields.io/badge/Télécharger pour Firefox-FF7139?logo=firefox&logoColor=fff&style=for-the-badge" alt="Download for Firefox" />
+    <img src="https://img.shields.io/badge/Télécharger%20pour%20Firefox-FF7139?logo=firefox&logoColor=fff&style=for-the-badge" alt="Download for Firefox" />
+  </a>
+  <br>
+  <a href="https://github.com/Game-K-Hack/SmartBalance/releases/download/1.0/SmartBalance.crx">
+    <img src="https://img.shields.io/badge/Télécharger%20pour%20Google%20Chrome-4285F4?logo=googlechrome&logoColor=fff&style=for-the-badge" alt="Download for Firefox" />
   </a>
 </p>
 
@@ -40,18 +44,21 @@ SmartBalance est un module qui modifie la page SmartRH pour y ajouter un widget 
 
 ## Installation
 
-Télécharger la dernière version de l'extension [ICI](https://github.com/Game-K-Hack/SmartBalance/releases/latest), et ajoutez-la à votre navigateur.
+Pour faire une installation manuelle, télécharger la dernière version de l'extension [ICI](https://github.com/Game-K-Hack/SmartBalance/releases/latest), et ajoutez-la à votre navigateur.
 
 #### Firefox
 
 1. Aller dans "[Gestion de vos extensions](about:addons)"
 2. Cliquer sur le menu paramètres *(la petite roue crantée)*
 3. Et cliquer sur "**Installer un module depuis un fichier...**"
-4. Enfin sélectionner l'extension téléchargé précédemant
+4. Enfin sélectionner l'extension téléchargée précédemment
 
 #### Chrome
 
-- *bientôt disponible*
+1. Aller dans "[Gérer les extensions](chrome://extensions/)"
+2. Activer le mode "**développeur**" *(en haut à droite)*
+3. Cliquer sur "**Charger l'extension non empaquetée**"
+4. Enfin sélectionner l'extension *(le code non empaquetée)* téléchargée précédemment
 
 ## Demo
 
