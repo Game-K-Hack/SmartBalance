@@ -1,21 +1,11 @@
-// ==UserScript==
-// @name         Widget SRH Timer
-// @namespace    http://tampermonkey.net/
-// @version      2025-01-09
-// @description  try to take over the world!
-// @author       Game_K
-// @match        https://portail-rh.algam.net/smartw080/srh/smartrh/index.html*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=algam.net
-// @grant        none
-// ==/UserScript==
-
 (function() {
     'use strict';
 
     const HOURS_PER_WEEK = 38;
-    const HOURS_PER_WEEK_S = HOURS_PER_WEEK*3600;
     const HOURS_PER_DAY = HOURS_PER_WEEK/5;
     const HOURS_PER_DAY_S = HOURS_PER_DAY*3600;
+
+    let lockexecute = 0;
 
     function formatDate(date) {
         var d = new Date(date),
@@ -65,19 +55,6 @@
         return hours * 3600 + minutes * 60 + seconds;
     }
 
-    function seconds2time(seconds) {
-        const hours = Math.floor(seconds / 3600); // Convertir en heures
-        const minutes = Math.floor((seconds % 3600) / 60); // Calculer les minutes restantes
-        const secs = seconds % 60; // Calculer les secondes restantes
-
-        // Formatage avec des zéros initiaux si nécessaire
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(secs).padStart(2, '0');
-
-        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-    }
-
     function sortTimes(times) {
         return times.sort((a, b) => time2seconds(a) - time2seconds(b));
     }
@@ -111,21 +88,13 @@
     }
 
     function findCurrentWeekIndex(dates) {
-        // const today = new Date().toISOString().split("T")[0];
         const groupedWeeks = groupByWeek(dates);
-        // alert(JSON.stringify(groupedWeeks));
-        // for (let i = 0; i < groupedWeeks.length; i++) {
-            // if (groupedWeeks[i].includes(today)) {
-                // return i;
-            // }
-        // }
-        // return -1;
         return groupedWeeks.length-1;
     }
 
     function getLocalTime() {
         const now = new Date();
-        const hours = now.getHours(); // Heure locale
+        const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
@@ -205,13 +174,18 @@
 
         box3.style.backgroundColor = "#ad5d93";
         box3.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`;
-        box3.querySelector(`span[class="sub-details"]`).innerText = "Heures de sortie idéal";
+        box3.querySelector(`span[class="sub-details"]`).innerText = "Heures de sortie idéales";
         box3.querySelector(`h2[class="details"]`).innerText = hdsi;
 
         document.querySelector(`div[class="cs-dashboard-content"]`).appendChild(elm);
     }
 
     function executeWhenElementCreated(observer) {
+        if (lockexecute === 1) {
+            return;
+        }
+        lockexecute = 1;
+        setTimeout(() => { lockexecute = 0; }, 2000);
         boxhtml(-1, -1, -1);
         let d = gettime();
         if (Object.keys(d).includes("error") && Object.keys(d).includes("codeError")) {
@@ -234,18 +208,18 @@
         let htoday = getLocalTime();
         let currentweek = findCurrentWeekIndex(Object.keys(d));
 
-        if (currentweek > -1) { // Si il y eu des pointages dans la semaine
+        if (currentweek > -1) {
             cw = weeks[currentweek];
             for (let i = 0; i < cw.length; i++) {
                 if (cw[i].length != 4 && cw[i] != timesorted[today]) {
-                    alert("ERROR: Vous avez oublié de pointé !");
-                } else if (cw[i].length == 4) {
-                    sweekwork += (time2seconds(cw[i][1]) - time2seconds(cw[i][0])) + (time2seconds(cw[i][3]) - time2seconds(cw[i][2]));
+                        alert("ERROR: Vous avez oublié de pointer !");
+                    } else if (cw[i].length == 4) {
+                        sweekwork += (time2seconds(cw[i][1]) - time2seconds(cw[i][0])) + (time2seconds(cw[i][3]) - time2seconds(cw[i][2]));
+                    }
                 }
             }
-        }
-
-        if (timesorted[today] !== undefined) { // Si il y a eu un pointage enregistré aujourd'hui
+        
+        if (timesorted[today] !== undefined) {
             if (timesorted[today].length == 1) {
                 sworkedtoday = time2seconds(htoday) - time2seconds(timesorted[today][0]);
                 sidealout = time2seconds(htoday) + (HOURS_PER_DAY_S - sworkedtoday);
@@ -263,7 +237,6 @@
                 sworkedtoday = time2seconds(timesorted[today][1]) - time2seconds(timesorted[today][0]);
                 sworkedtoday += time2seconds(timesorted[today][3]) - time2seconds(timesorted[today][2]);
                 sidealout = time2seconds(htoday) + (HOURS_PER_DAY_S - sworkedtoday);
-                // sweekwork += sworkedtoday - HOURS_PER_DAY_S // déjà calculé dans la boucle for
                 sbalance = sweekwork - (HOURS_PER_DAY_S*(cw.length));
             }
 
@@ -272,12 +245,11 @@
             }
         } else {
             sbalance = sweekwork - (HOURS_PER_DAY_S*(cw.length));
-            // if (cw.length <= 5) {
-                // sidealout = time2seconds(htoday) + HOURS_PER_DAY_S;
-            // }
         }
+
         boxhtml(sworkedtoday, sbalance, sidealout);
         observer.disconnect();
+        lockexecute = 0;
     }
 
     function initializeObserver() {
@@ -302,5 +274,4 @@
     } else {
         initializeObserver();
     }
-
 })();
