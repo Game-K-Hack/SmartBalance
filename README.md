@@ -25,6 +25,13 @@
 </p>
 
 <br>
+
+<p align="center">
+  <a href="https://github.com/Game-K-Hack/SmartBalance/releases/download/1.0/SmartBalance.xpi">
+    <img src="https://img.shields.io/badge/Télécharger pour Firefox-FF7139?logo=firefox&logoColor=fff&style=for-the-badge" alt="Download for Firefox" />
+  </a>
+</p>
+
 <br>
 
 ## Description
