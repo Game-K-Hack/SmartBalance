@@ -1,32 +1,48 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "SmartBalance",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Widget pour suivre le temps de travail sur le portail SmartRH",
   "icons": {
-    "16": "icons/icon-16.png",
-    "32": "icons/icon-32.png",
-    "48": "icons/icon-48.png",
-    "64": "icons/icon-64.png",
-    "128": "icons/icon-128.png",
-    "256": "icons/icon-256.png"
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "64": "assets/icons/icon-64.png",
+      "128": "assets/icons/icon-128.png",
+      "256": "assets/icons/icon-256.png"
   },
   "permissions": [
-    "https://portail-rh.algam.net/*"
+    "storage",
+    "tabs", 
+    "activeTab"
   ],
-  "content_scripts": [
-    {
+  "host_permissions": [
+      "https://portail-rh.algam.net/*"
+  ],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_title": "SmartBalance",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "64": "assets/icons/icon-64.png",
+      "128": "assets/icons/icon-128.png",
+      "256": "assets/icons/icon-256.png"
+    }
+  },
+  "content_scripts": [{
       "matches": ["https://portail-rh.algam.net/smartw080/srh/smartrh/index.html*"],
       "js": ["content.js"],
       "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
-    "script.js"
-  ],
+  }],
+  "web_accessible_resources": [{
+      "resources": ["script.js"],
+      "matches": ["https://portail-rh.algam.net/*"]
+  }],
   "browser_specific_settings": {
-    "gecko": {
-      "update_url": "https://raw.githubusercontent.com/Game-K-Hack/SmartBalance/refs/heads/master/updates.json"
-    }
+      "gecko": {
+          "update_url": "https://raw.githubusercontent.com/Game-K-Hack/SmartBalance/refs/heads/master/updates.json"
+      }
   }
 }

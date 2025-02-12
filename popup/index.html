@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SmartBalance</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Varela Round" rel="stylesheet">
+    <link href="./checkboxstyle.css" rel="stylesheet">
+    <link href="./tooltipstyle.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="notpage" class="text">
+        <p>Tu n'es pas sur la bonne page pour configurer l'extension</p>
+
+        <button id="notpagebtn" class="btnhome">
+            <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M19 10.425L13.425 16q-.3.3-.675.45t-.75.15t-.75-.15t-.675-.45L3.7 9.125q-.275-.275-.275-.687t.275-.713q.3-.3.713-.3t.712.3L12 14.6L17.6 9H14q-.425 0-.712-.288T13 8t.288-.712T14 7h6q.425 0 .713.288T21 8v6q0 .425-.288.713T20 15t-.712-.288T19 14z"/>
+                </svg>
+            </span>
+            <span class="btnhometext">Y aller</span>
+        </button>
+    </div>
+
+    <div id="page">
+        <div class="logo">
+            <img class="logo" src="../assets/icons/icon-256.png">
+            <h2 class="titlepage">SmartBalance</h2>
+        </div>
+        <div id="what">
+            <img src="../assets/pourquoi.gif">
+            <h5>Pourquoi tu as installé l'extension, si tu as désactive tous les modules ?</h5>
+        </div>
+        <div class="sep">
+            <p>Paramétrage</p>
+        </div>
+        <div id="setting">
+            <div class="form-check form-switch lvl1">
+                <input class="form-check-input" type="checkbox" id="ihjt" checked>
+                <label class="form-check-label" for="ihjt">Heures du jour travaillé</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihjtt" checked>
+                <label class="form-check-label" for="ihjtt">Texte</label>
+            </div>
+
+            <div class="form-check form-switch lvl1">
+                <input class="form-check-input" type="checkbox" id="ibs" checked>
+                <label class="form-check-label" for="ibs">Balance de la semaine</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ibse" checked>
+                <label class="form-check-label" for="ibse">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ibst" checked>
+                <label class="form-check-label" for="ibst">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ibsc" checked>
+                <label class="form-check-label" for="ibsc">Couleur</label>
+            </div>
+
+            <div class="form-check form-switch lvl1">
+                <input class="form-check-input" type="checkbox" id="ib30dj" checked>
+                <label class="form-check-label" for="ib30dj">Balance des 30 derniers jours</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ib30dje" checked>
+                <label class="form-check-label" for="ib30dje">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ib30djt" checked>
+                <label class="form-check-label" for="ib30djt">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ib30djc" checked>
+                <label class="form-check-label" for="ib30djc">Couleur</label>
+            </div>
+
+            <div class="form-check form-switch lvl1">
+                <input class="form-check-input" type="checkbox" id="ihsi" checked>
+                <label class="form-check-label" for="ihsi">Heure de sortie idéale</label>
+                <div class="tooltip">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11t-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                    </svg>
+                    <span class="tooltiptext">L'heure de sortie idéale correspond à l'heure précise à laquelle une personne peut terminer sa journée, sans générer ni avance ni retard.</span>
+                </div>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsie" checked>
+                <label class="form-check-label" for="ihsie">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsit" checked>
+                <label class="form-check-label" for="ihsit">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsic" checked>
+                <label class="form-check-label" for="ihsic">Couleur</label>
+            </div>
+            <div class="form-check form-switch lvl2">
+                <input class="form-check-input" type="checkbox" id="ihsid" checked>
+                <label class="form-check-label" for="ihsid">Detail des heures</label>
+                <div class="tooltip">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11t-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                    </svg>
+                    <span class="tooltiptext">Afficher le temps restant ou passé par rapport à l'heure de sortie idéale.</span>
+                </div>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihside" checked>
+                <label class="form-check-label" for="ihside">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihsidt" checked>
+                <label class="form-check-label" for="ihsidt">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihsidc" checked>
+                <label class="form-check-label" for="ihsidc">Couleur</label>
+            </div>
+
+            <div class="form-check form-switch lvl1">
+                <input class="form-check-input" type="checkbox" id="ihsiq" checked>
+                <label class="form-check-label" for="ihsiq">Heure de sortie idéale équilibré</label>
+                <div class="tooltip">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11t-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                    </svg>
+                    <span class="tooltiptext">L'heure de sortie idéale correspond à l'heure précise à laquelle une personne peut terminer sa journée, en prends ses heures d'avance ou récupérant son retard.</span>
+                </div>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsiqe" checked>
+                <label class="form-check-label" for="ihsiqe">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsiqt" checked>
+                <label class="form-check-label" for="ihsiqt">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl2">
+                <input type="checkbox" id="ihsiqc" checked>
+                <label class="form-check-label" for="ihsiqc">Couleur</label>
+            </div>
+            <div class="form-check form-switch lvl2">
+                <input class="form-check-input" type="checkbox" id="ihsiqd" checked>
+                <label class="form-check-label" for="ihsiqd">Detail des heures</label>
+                <div class="tooltip">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11t-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"/>
+                    </svg>
+                    <span class="tooltiptext">Afficher le temps restant ou passé par rapport à l'heure de sortie idéale équilibré.</span>
+                </div>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihsiqde" checked>
+                <label class="form-check-label" for="ihsiqde">Emoji</label>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihsiqdt" checked>
+                <label class="form-check-label" for="ihsiqdt">Texte</label>
+            </div>
+            <div class="form-check form-switch optlvl3">
+                <input type="checkbox" id="ihsiqdc" checked>
+                <label class="form-check-label" for="ihsiqdc">Couleur</label>
+            </div>
+        </div>
+
+        <div class="sep">
+            <p>Couleur</p>
+        </div>
+        <div id="color">
+            <label for="chjt">Heures du jour travaillé:</label>
+            <input type="color" id="chjt" name="chjt" value="#f0c828">
+            <br>
+            
+            <label for="cbs">Balance de la semaine:</label>
+            <input type="color" id="cbs" name="cbs" value="#c84646">
+            <br>
+            
+            <label for="cb30dj">Balance des 30 derniers jours:</label>
+            <input type="color" id="cb30dj" name="cb30dj" value="#ff0000">
+            <br>
+            
+            <label for="chsi">Heure de sortie idéale:</label>
+            <input type="color" id="chsi" name="chsi" value="#ad5d93">
+            <br>
+            
+            <label for="chsie">Heure de sortie idéale équilibré:</label>
+            <input type="color" id="chsie" name="chsie" value="#ff0000">
+        </div>
+
+        <div class="sep">
+            <p>Àpropos</p>
+        </div>
+        <div id="about">
+        </div>
+        <br>
+    </div>
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
