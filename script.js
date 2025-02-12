@@ -4,6 +4,30 @@
     const HOURS_PER_WEEK = 38;
     const HOURS_PER_DAY = HOURS_PER_WEEK/5;
     const HOURS_PER_DAY_S = HOURS_PER_DAY*3600;
+    const CARD_CONFIG = {
+        "hdj": {
+            "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M12 20q-1.649 0-3.108-.626t-2.55-1.716t-1.716-2.55T4 12q0-.965.212-1.849q.211-.884.59-1.671q.379-.788.916-1.46q.538-.672 1.19-1.22l6.107 6.108l-.707.708l-5.4-5.4q-.789.88-1.349 2.05T5 12q0 2.9 2.05 4.95T12 19t4.95-2.05T19 12q0-2.617-1.76-4.651T12.5 5.023V7h-1V4h.5q1.649 0 3.108.626t2.55 1.716t1.716 2.55T20 12t-.626 3.108t-1.716 2.55t-2.55 1.716T12 20m-5.001-7.23q-.328 0-.548-.222t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5 5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5-5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22"/></svg>`, 
+            "title": "Heures du jour"
+        }, 
+        "bdls": {
+            "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M3 20v-1h8.5V7.94q-.708-.129-1.25-.642T9.56 6H6.116L9 13.212q-.058 1-.929 1.702T6 15.616t-2.071-.702T3 13.212L5.885 6H4V5h5.56q.165-.836.834-1.418T12 3t1.606.582T14.44 5H20v1h-1.884L21 13.212q-.058 1-.929 1.702T18 15.616t-2.071-.702T15 13.212L17.884 6h-3.443q-.149.785-.691 1.298t-1.25.643V19H21v1zm12.99-6.884h4.02L18 8.092zm-12 0h4.02L6 8.092zM12 7q.617 0 1.059-.441q.441-.442.441-1.059t-.441-1.059Q12.617 4 12 4t-1.059.441T10.5 5.5t.441 1.059Q11.383 7 12 7"/></svg>`, 
+            "title": "Balance de la semaine"
+        }, 
+        "hdsi": {
+            "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`, 
+            "title": "Heures de sortie idéales"
+        }
+    }
+
+    let settingIds = [
+        "hjt", "hjtt", "bs", "bse", "bst", 
+        "bsc", "b30dj", "b30dje", "b30djt", "b30djc", 
+        "hsi", "hsie", "hsit", "hsic", "hsid", 
+        "hside", "hsidt", "hsidc", "hsiq", "hsiqe", 
+        "hsiqt", "hsiqc", "hsiqd", "hsiqde", "hsiqdt", "hsiqdc"
+    ];
+    let colorIds = ["chjt", "cbs", "cb30dj", "chsi", "chsie"];
+    let boxIds = ["hjt", "bs", "b30dj", "hsi", "hsie"];
 
     let lockexecute = 0;
 
@@ -124,6 +148,67 @@
         return `${formattedHours} h ${formattedMinutes}`;
     }
 
+    function check_display_card(id) {
+        let actv = sessionStorage.getItem("smartbalance");
+        return atob(actv).split("|")[settingIds.indexOf(id)] === "true";
+    }
+
+    function add_card(id, base_elm, text, colortext, detailtext, colordetailtext) {
+        if (check_display_card(id)) {
+            let elm = base_elm.cloneNode(true);
+            let clr = atob(sessionStorage.getItem("smartbalancevalue")).split("|");
+            elm.style.backgroundColor = clr[boxIds.indexOf(id)];
+            elm.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = CARD_CONFIG[id]["icon"];
+            elm.querySelector(`span[class="sub-details"]`).innerText = CARD_CONFIG[id]["title"];
+            elm.querySelector(`h2[class="details"]`).innerText = text;
+            if (colortext) {
+                elm.querySelector(`h2[class="details"]`).innerHTML += `<span style="color: ${colortext["color"]};">${colortext["text"]}</span>`;
+            }
+            base_elm.parentElement.appendChild(elm);
+        }
+    }
+
+    function card_setter(val) {
+        if (document.getElementById("cloned")) {
+            document.getElementById("cloned").remove();
+        }
+
+        let val = sessionStorage.getItem("smartbalancevalue");
+        val = atob(val).split("|");
+
+        heuresDuJourTravaille = val[0];
+        balanceDeLaSemaine = val[1];
+        // balanceDes30DerniersJours = val[2];
+        heureDeSortieIdeale = val[3];
+        // detailHeureDeSortieIdeale = val[4];
+        // heureDeSortieIdealeEquilibre = val[5];
+        // detailHeureDeSortieIdealeEquilibre = val[6];
+
+        let elm = document.querySelector(`article[code="congeGta"]`).cloneNode(true);
+        elm.classList.remove('position-5');
+        elm.classList.add('position-6');
+        elm.id = "cloned";
+
+        let box = elm.querySelectorAll(`div[class="conge-container"] div[class="conge-color card"]`);
+        let base_box = box[0];
+
+        if (val === "error") {
+            elm.querySelector(`h2[class="cs-widget-title"]`).innerText = "Heures - ❌ Error";
+        } else if (val === "wait") {
+            elm.querySelector(`h2[class="cs-widget-title"]`).innerText = "Heures - ⏳ Wait...";
+        } else {
+            add_card("hjt", base_box, heuresDuJourTravaille);
+            add_card("bs", base_box, balanceDeLaSemaine);
+            // add_card("b30dj", base_box, balanceDes30DerniersJours);
+            add_card("hsi", base_box, heureDeSortieIdeale);
+            // add_card("hsiq", base_box, heureDeSortieIdealeEquilibre);
+        }
+
+        for (let b of box) {
+            b.remove();
+        }
+    }
+
     function boxhtml(h, b, i) {
         if (document.getElementById("cloned")) {
             document.getElementById("cloned").remove();
@@ -158,24 +243,30 @@
         elm.querySelector(`h2[class="cs-widget-title"]`).innerText = "Heures";
 
         let box = elm.querySelectorAll(`div[class="conge-container"] div[class="conge-color card"]`);
-        let box1 = box[0];
-        let box2 = box[1];
-        let box3 = box[2];
 
-        box1.style.backgroundColor = "#f0c828";
-        box1.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M12 20q-1.649 0-3.108-.626t-2.55-1.716t-1.716-2.55T4 12q0-.965.212-1.849q.211-.884.59-1.671q.379-.788.916-1.46q.538-.672 1.19-1.22l6.107 6.108l-.707.708l-5.4-5.4q-.789.88-1.349 2.05T5 12q0 2.9 2.05 4.95T12 19t4.95-2.05T19 12q0-2.617-1.76-4.651T12.5 5.023V7h-1V4h.5q1.649 0 3.108.626t2.55 1.716t1.716 2.55T20 12t-.626 3.108t-1.716 2.55t-2.55 1.716T12 20m-5.001-7.23q-.328 0-.548-.222t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5 5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5-5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22"/></svg>`;
-        box1.querySelector(`span[class="sub-details"]`).innerText = "Heures du jour";
-        box1.querySelector(`h2[class="details"]`).innerText = hdj;
+        let base_box = box[0];
+        add_card("hdj", base_box, hdj);
+        add_card("bdls", base_box, bdls);
+        add_card("hdsi", base_box, hdsi);
 
-        box2.style.backgroundColor = "#c84646";
-        box2.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M3 20v-1h8.5V7.94q-.708-.129-1.25-.642T9.56 6H6.116L9 13.212q-.058 1-.929 1.702T6 15.616t-2.071-.702T3 13.212L5.885 6H4V5h5.56q.165-.836.834-1.418T12 3t1.606.582T14.44 5H20v1h-1.884L21 13.212q-.058 1-.929 1.702T18 15.616t-2.071-.702T15 13.212L17.884 6h-3.443q-.149.785-.691 1.298t-1.25.643V19H21v1zm12.99-6.884h4.02L18 8.092zm-12 0h4.02L6 8.092zM12 7q.617 0 1.059-.441q.441-.442.441-1.059t-.441-1.059Q12.617 4 12 4t-1.059.441T10.5 5.5t.441 1.059Q11.383 7 12 7"/></svg>`;
-        box2.querySelector(`span[class="sub-details"]`).innerText = "Balance de la semaine";
-        box2.querySelector(`h2[class="details"]`).innerText = bdls;
+        for (let b of box) {
+            b.remove();
+        }
 
-        box3.style.backgroundColor = "#ad5d93";
-        box3.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`;
-        box3.querySelector(`span[class="sub-details"]`).innerText = "Heures de sortie idéales";
-        box3.querySelector(`h2[class="details"]`).innerText = hdsi;
+        // box1.style.backgroundColor = "#f0c828";
+        // box1.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M12 20q-1.649 0-3.108-.626t-2.55-1.716t-1.716-2.55T4 12q0-.965.212-1.849q.211-.884.59-1.671q.379-.788.916-1.46q.538-.672 1.19-1.22l6.107 6.108l-.707.708l-5.4-5.4q-.789.88-1.349 2.05T5 12q0 2.9 2.05 4.95T12 19t4.95-2.05T19 12q0-2.617-1.76-4.651T12.5 5.023V7h-1V4h.5q1.649 0 3.108.626t2.55 1.716t1.716 2.55T20 12t-.626 3.108t-1.716 2.55t-2.55 1.716T12 20m-5.001-7.23q-.328 0-.548-.222t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5 5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5-5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22"/></svg>`;
+        // box1.querySelector(`span[class="sub-details"]`).innerText = "Heures du jour";
+        // box1.querySelector(`h2[class="details"]`).innerText = hdj;
+
+        // box2.style.backgroundColor = "#c84646";
+        // box2.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M3 20v-1h8.5V7.94q-.708-.129-1.25-.642T9.56 6H6.116L9 13.212q-.058 1-.929 1.702T6 15.616t-2.071-.702T3 13.212L5.885 6H4V5h5.56q.165-.836.834-1.418T12 3t1.606.582T14.44 5H20v1h-1.884L21 13.212q-.058 1-.929 1.702T18 15.616t-2.071-.702T15 13.212L17.884 6h-3.443q-.149.785-.691 1.298t-1.25.643V19H21v1zm12.99-6.884h4.02L18 8.092zm-12 0h4.02L6 8.092zM12 7q.617 0 1.059-.441q.441-.442.441-1.059t-.441-1.059Q12.617 4 12 4t-1.059.441T10.5 5.5t.441 1.059Q11.383 7 12 7"/></svg>`;
+        // box2.querySelector(`span[class="sub-details"]`).innerText = "Balance de la semaine";
+        // box2.querySelector(`h2[class="details"]`).innerText = bdls;
+
+        // box3.style.backgroundColor = "#ad5d93";
+        // box3.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`;
+        // box3.querySelector(`span[class="sub-details"]`).innerText = "Heures de sortie idéales";
+        // box3.querySelector(`h2[class="details"]`).innerText = hdsi;
 
         document.querySelector(`div[class="cs-dashboard-content"]`).appendChild(elm);
     }
@@ -247,6 +338,10 @@
             sbalance = sweekwork - (HOURS_PER_DAY_S*(cw.length));
         }
 
+        sessionStorage.setItem("smartbalancevalue", btoa([
+            sworkedtoday, sbalance, sidealout
+        ].join("|")));
+
         boxhtml(sworkedtoday, sbalance, sidealout);
         observer.disconnect();
         lockexecute = 0;
@@ -273,5 +368,24 @@
         document.addEventListener('DOMContentLoaded', initializeObserver);
     } else {
         initializeObserver();
+    }
+
+    function maFonction(nouvelleValeur) {
+        console.log("Nouvelle valeur détectée :", nouvelleValeur);
+        // Ajoutez ici l'action à exécuter
+    }
+    
+    function eventStorage() {
+        window.addEventListener("storage", function(event) {
+            if (event.key === "smartbalance") {
+                maFonction(event.newValue);
+            }
+        });
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', eventStorage);
+    } else {
+        eventStorage();
     }
 })();
