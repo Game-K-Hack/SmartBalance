@@ -1,11 +1,13 @@
 let whatalready = false;
 let whatTimeoutId = null;
 let settingIds = [
-  "ihjt", "ihjtt", "ibs", "ibse", "ibst", 
-  "ibsc", "ib30dj", "ib30dje", "ib30djt", "ib30djc", 
-  "ihsi", "ihsie", "ihsit", "ihsic", "ihsid", 
-  "ihside", "ihsidt", "ihsidc", "ihsiq", "ihsiqe", 
-  "ihsiqt", "ihsiqc", "ihsiqd", "ihsiqde", "ihsiqdt", "ihsiqdc"
+  "ihjt", "ihjtt", 
+  "ibs", "ibse", "ibst", 
+  "ib30dj", "ib30dje", "ib30djt", 
+  "ihsi", "ihsit", 
+  "ihsid", "ihsidt", "ihsidc", 
+  "ihsiq", "ihsiqt", 
+  "ihsiqd", "ihsiqdt", "ihsiqdc"
 ];
 let colorIds = ["chjt", "cbs", "cb30dj", "chsi", "chsie"];
 
@@ -45,12 +47,13 @@ function update() {
 
   let vals = [];
   for (let id of settingIds) { vals.push(getValueById(id)); }
-  browser.storage.local.set({ smartbalance: btoa(vals.join("|")) });
-  sessionStorage.setItem("smartbalance", btoa(vals.join("|")));
+  let value = btoa(vals.join("|"));
+  browser.storage.local.set({ smartbalance: value });
+
   let valsc = [];
   for (let id of colorIds) { valsc.push(document.getElementById(id).value); }
-  browser.storage.local.set({ smartbalancec: btoa(valsc.join("|")) });
-  sessionStorage.setItem("smartbalancec", btoa(valsc.join("|")));
+  let valuec = btoa(valsc.join("|"));
+  browser.storage.local.set({ smartbalancec: valuec });
 }
 
 function checkUrl(url) {
@@ -58,6 +61,7 @@ function checkUrl(url) {
   if (!correctDomain) {
     document.body.style.width = "10em";
     document.body.style.height = "6.5em";
+    document.getElementById("page").style.display = "none";
   } else {
     document.getElementById("notpage").style.display = "none";
 
