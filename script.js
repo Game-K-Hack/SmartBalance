@@ -37,6 +37,7 @@
     let lockexecute = 0;
     let lockdisplay = 0;
     let saveTime = "";
+    let last_status = null;
 
     let userData = null;
 
@@ -77,7 +78,7 @@
 
     function data2time(data) {
         let timedata = {};
-        let timelist = data.response.popu[srh.user.id.toString()]["1"].cpointagereel.rows;
+        let timelist = data["response"]["popu"][srh.user.id.toString()]["1"]["cpointagereel"]["rows"];
         timelist.forEach((r) => timedata[r.datecorr.val] = []);
         timelist.forEach((r) => timedata[r.datecorr.val].push(r.timecorr.val));
         return timedata;
@@ -241,10 +242,19 @@
 
     function card_seter(status) {
         if (document.getElementById("cloned")) {
-            document.getElementById("cloned").remove();
+            if (status != last_status) {
+                document.getElementById("cloned").remove();
+            } else {
+                return;
+            }
         }
 
-        let val = calcul();
+        last_status = status;
+
+        let val = null;
+        if (status === "display") {
+            val = calcul();
+        }
 
         let elm = document.querySelector(`article[code="congeGta"]`).cloneNode(true);
         elm.classList.remove('position-5');
@@ -289,6 +299,9 @@
     }
 
     function card_updater() {
+        //
+        // PROBLEME: quand mis à jour, les details disparraisent
+        //
         let elm = document.getElementById("cloned");
         if (elm) {
             let val = calcul();
@@ -361,39 +374,55 @@
     }
 
     function executeWhenElementCreated() {
-        if (lockexecute === 1) {
-            return;
+        card_seter("wait");
+        if (userData === null) {
+            userData = gettime();
+            if (Object.keys(userData).includes("error") && Object.keys(userData).includes("codeError")) {
+                card_seter("error");
+                return;
+            } else {
+                userData = data2time(userData);
+            }
+        } else {
+            card_seter("display");
+            return "end";
         }
-        lockexecute = 1;
-        setTimeout(() => { lockexecute = 0; }, 2000);
-        // card_seter("wait");
-        userData = gettime();
-        if (Object.keys(userData).includes("error") && Object.keys(userData).includes("codeError")) {
-            card_seter("error");
-            return;
+    }
+
+    function getData() {
+        if (userData == null) {
+            try {
+                userData = gettime();
+                if (Object.keys(userData).includes("error") && Object.keys(userData).includes("codeError")) {
+                    userData = null;
+                    setTimeout(() => { getData() }, 1500);
+                } else {
+                    userData = data2time(userData);
+                }
+            } catch (e) {
+                if (e.includes("srh.getIdContext is not a function")) {
+                    setTimeout(() => { getData() }, 1500);
+                }
+            }
         }
-        userData = data2time(userData);
-        card_seter("display");
-        lockexecute = 0;
-        return "end"
     }
 
     function initializeObserver() {
         const targetNode = document.body;
         const config = { childList: true, subtree: true };
         const observer = new MutationObserver((mutationsList, observer) => {
+            getData();
             for (const mutation of mutationsList) {
                 if (mutation.type === 'childList') {
                     if (document.querySelector('article[code="congeGta"] div.conge-container[class="conge-container"] div[class="conge-color card"] svg g path')) {
-                        setTimeout(() => {
-                            let res = executeWhenElementCreated();
-                            if (res === "end") {
-                                observer.disconnect();
-                                setInterval(card_updater, 30000);
-                            }
-                        }, 100);
+                        let res = executeWhenElementCreated();
+                        if (res === "end") {
+                            observer.disconnect();
+                            // on met à jour les valeurs toutes les 30 secondes
+                            setInterval(card_updater, 30000);
+                        }
                     } else if (document.querySelector('article[code="congeGta"]')) {
-                        // card_seter("wait");
+                        card_seter("wait");
                     }
                     
                 }
