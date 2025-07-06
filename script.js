@@ -8,19 +8,27 @@
     const CARD_CONFIG = {
         "hjt": {
             "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M12 20q-1.649 0-3.108-.626t-2.55-1.716t-1.716-2.55T4 12q0-.965.212-1.849q.211-.884.59-1.671q.379-.788.916-1.46q.538-.672 1.19-1.22l6.107 6.108l-.707.708l-5.4-5.4q-.789.88-1.349 2.05T5 12q0 2.9 2.05 4.95T12 19t4.95-2.05T19 12q0-2.617-1.76-4.651T12.5 5.023V7h-1V4h.5q1.649 0 3.108.626t2.55 1.716t1.716 2.55T20 12t-.626 3.108t-1.716 2.55t-2.55 1.716T12 20m-5.001-7.23q-.328 0-.548-.222t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5 5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22m5-5q-.327 0-.547-.221t-.22-.55t.221-.547t.55-.22t.547.221t.22.55t-.221.547t-.55.22"/></svg>`, 
-            "title": "Heures du jour"
+            "title": "Heures du jour",
+            "description": "Heures du jour travaillées",
+            "calculation": "Calcule le temps travaillé aujourd'hui :\n• Si 1 pointage : temps actuel - heure d'arrivée\n• Si 2 pointages : heure de sortie - heure d'arrivée\n• Si 3 pointages : (sortie pause - arrivée) + (temps actuel - retour pause)\n• Si 4 pointages : (sortie pause - arrivée) + (sortie - retour pause)"
         }, 
         "bs": {
             "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M3 20v-1h8.5V7.94q-.708-.129-1.25-.642T9.56 6H6.116L9 13.212q-.058 1-.929 1.702T6 15.616t-2.071-.702T3 13.212L5.885 6H4V5h5.56q.165-.836.834-1.418T12 3t1.606.582T14.44 5H20v1h-1.884L21 13.212q-.058 1-.929 1.702T18 15.616t-2.071-.702T15 13.212L17.884 6h-3.443q-.149.785-.691 1.298t-1.25.643V19H21v1zm12.99-6.884h4.02L18 8.092zm-12 0h4.02L6 8.092zM12 7q.617 0 1.059-.441q.441-.442.441-1.059t-.441-1.059Q12.617 4 12 4t-1.059.441T10.5 5.5t.441 1.059Q11.383 7 12 7"/></svg>`, 
-            "title": "Balance de la semaine"
+            "title": "Balance de la semaine",
+            "description": "Balance des heures de la semaine",
+            "calculation": "Calcule le solde d'heures de la semaine courante :\n• Heures travaillées cette semaine - (7.6h × nombre de jours travaillés)\n• Positif = heures d'avance\n• Négatif = heures de retard"
         }, 
         "hsi": {
             "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`, 
-            "title": "Heures de sortie idéales"
+            "title": "Heures de sortie idéales",
+            "description": "Heure de sortie idéale pour faire exactement 7.6h",
+            "calculation": "Calcule l'heure à laquelle partir pour faire exactement 7.6h :\n• Temps actuel + (7.6h - temps déjà travaillé)\n• Le détail indique si cette heure est passée ou à venir"
         }, 
         "hsiq": {
             "icon": `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="3 3 18 18"><path fill="#fff" d="M11 12.77q.329 0 .549-.23t.22-.54q0-.329-.22-.549t-.549-.22q-.31 0-.54.22t-.23.549q0 .31.23.54t.54.23M7 20v-1l7-.692V6.452q0-.567-.37-.983q-.368-.415-.91-.465L7.615 4.5v-1l5.23.516q.927.103 1.54.794Q15 5.5 15 6.427v12.762zm-2.539 0v-1H6V5.116q0-.697.472-1.156q.472-.46 1.144-.46h8.769q.696 0 1.156.46T18 5.116V19h1.539v1zM7 19h10V5.116q0-.27-.173-.443t-.442-.173h-8.77q-.269 0-.442.173T7 5.116z"/></svg>`, 
-            "title": "Heures de sortie idéales équilibré"
+            "title": "Heures de sortie idéales équilibré",
+            "description": "Heure de sortie pour équilibrer la semaine",
+            "calculation": "Calcule l'heure de sortie pour équilibrer la balance hebdomadaire :\n• Heure de sortie idéale - balance de la semaine\n• Permet de rattraper le retard ou d'optimiser l'avance\n• Le détail indique si cette heure est passée ou à venir"
         }
     }
 
@@ -242,6 +250,90 @@
         }
     };
 
+    const popup = {
+        create(cardId) {
+            // Supprimer le popup existant s'il y en a un
+            const existingPopup = document.getElementById('info-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            const config = CARD_CONFIG[cardId];
+            if (!config) return;
+
+            // Créer le popup
+            const popupDiv = document.createElement('div');
+            popupDiv.id = 'info-popup';
+            popupDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border: 2px solid #007bff;
+                border-radius: 10px;
+                padding: 20px;
+                max-width: 500px;
+                max-height: 400px;
+                overflow-y: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+            `;
+
+            // Créer l'overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'popup-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 9999;
+            `;
+
+            // Contenu du popup
+            popupDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; color: #007bff;">${config.title}</h3>
+                    <button id="close-popup" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Description :</strong>
+                    <p style="margin: 5px 0; color: #333;">${config.description}</p>
+                </div>
+                <div>
+                    <strong>Méthode de calcul :</strong>
+                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 5px 0; white-space: pre-wrap; font-size: 14px; color: #333;">${config.calculation}</pre>
+                </div>
+            `;
+
+            // Ajouter les éléments au DOM
+            document.body.appendChild(overlay);
+            document.body.appendChild(popupDiv);
+
+            // Gestionnaires d'événements pour fermer le popup
+            const closePopup = () => {
+                popupDiv.remove();
+                overlay.remove();
+            };
+
+            document.getElementById('close-popup').addEventListener('click', closePopup);
+            overlay.addEventListener('click', closePopup);
+
+            // Fermer avec Escape
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closePopup();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        }
+    };
+
     const ui = {
         getInnerHTMLCard(id, value, detailvalue = null, bl = false) {
             let newtext = "";
@@ -293,6 +385,7 @@
             elm.id = id;
             const clr = atob(localStorage.getItem("smartbalancec")).split("|");
             elm.style.backgroundColor = clr[BOX_IDS.indexOf(id)];
+            elm.style.cursor = 'pointer'; // Ajouter un curseur pointeur
             elm.querySelector(`span[data-cy="CsIcon-light"]`).innerHTML = CARD_CONFIG[id]["icon"];
             elm.querySelector(`span[class="sub-details"]`).innerText = CARD_CONFIG[id]["title"];
             
@@ -300,6 +393,21 @@
             h.innerHTML = this.getInnerHTMLCard(id, value, detailvalue, bl);
             h.style.display = "flex";
             h.style.justifyContent = "space-between";
+            
+            // Ajouter l'événement de clic pour ouvrir le popup
+            elm.addEventListener('click', () => {
+                popup.create(id);
+            });
+
+            // Ajouter un effet de survol
+            // elm.addEventListener('mouseenter', () => {
+            //     elm.style.transform = 'scale(1.02)';
+            //     elm.style.transition = 'transform 0.2s ease';
+            // });
+
+            // elm.addEventListener('mouseleave', () => {
+            //     elm.style.transform = 'scale(1)';
+            // });
             
             const prt = document.getElementById("cloned").querySelector(`div[class="conge-container"]`);
             prt.appendChild(elm);
