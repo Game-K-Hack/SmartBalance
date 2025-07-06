@@ -182,6 +182,140 @@
         }
     };
 
+    const pointageChecker = {
+        checkPointages() {
+            if (userData === null) return { hasErrors: false, errors: [] };
+            
+            const timesorted = {};
+            Object.keys(userData).forEach(key => {
+                timesorted[key] = utils.sortTimes(userData[key]);
+            });
+            
+            const today = new Date().toISOString().split("T")[0];
+            const errors = [];
+            
+            // Vérifier tous les jours sauf aujourd'hui
+            Object.keys(timesorted).forEach(date => {
+                if (date !== today) {
+                    const dayPointages = timesorted[date];
+                    // Vérifier que le nombre de pointages est pair et non égal à 4 si incomplet
+                    if (dayPointages.length % 2 !== 0) {
+                        errors.push({
+                            date: date,
+                            pointages: dayPointages.length,
+                            message: `Pointage incomplet (${dayPointages.length} pointages)`
+                        });
+                    }
+                }
+            });
+            
+            return { hasErrors: errors.length > 0, errors: errors };
+        },
+
+        showPointageErrorPopup(errors) {
+            // Supprimer le popup existant s'il y en a un
+            const existingPopup = document.getElementById('pointage-error-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            // Créer le popup d'erreur
+            const popupDiv = document.createElement('div');
+            popupDiv.id = 'pointage-error-popup';
+            popupDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border: 2px solid #dc3545;
+                border-radius: 10px;
+                padding: 20px;
+                max-width: 500px;
+                max-height: 400px;
+                overflow-y: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                z-index: 10001;
+                font-family: Arial, sans-serif;
+            `;
+
+            // Créer l'overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'pointage-error-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 10000;
+            `;
+
+            // Générer la liste des erreurs
+            const errorList = errors.map(error => {
+                const dateObj = new Date(error.date);
+                const formattedDate = dateObj.toLocaleDateString('fr-FR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                return `<li style="margin-bottom: 8px; padding: 8px; background: #f8d7da; border-radius: 4px; color: #721c24;">
+                    <strong>${formattedDate}</strong><br>
+                    ${error.message}
+                </li>`;
+            }).join('');
+
+            // Contenu du popup
+            popupDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; color: #dc3545; display: flex; align-items: center;">
+                        <span style="margin-right: 8px;">⚠️</span>
+                        Erreurs de pointage détectées
+                    </h3>
+                    <button id="close-pointage-popup" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <p style="margin: 5px 0; color: #333;">
+                        ${errors.length} jour${errors.length > 1 ? 's' : ''} avec des pointages incomplets détecté${errors.length > 1 ? 's' : ''} :
+                    </p>
+                    <ul style="margin: 10px 0; padding-left: 0; list-style: none;">
+                        ${errorList}
+                    </ul>
+                </div>
+                <div style="background: #d1ecf1; padding: 10px; border-radius: 5px; border-left: 4px solid #bee5eb;">
+                    <small style="color: #0c5460;">
+                        <strong>Info :</strong> Ces erreurs n'affectent pas les calculs du jour en cours et de la semaine, 
+                        mais peuvent impacter les statistiques globales.
+                    </small>
+                </div>
+            `;
+
+            // Ajouter les éléments au DOM
+            document.body.appendChild(overlay);
+            document.body.appendChild(popupDiv);
+
+            // Gestionnaires d'événements pour fermer le popup
+            const closePopup = () => {
+                popupDiv.remove();
+                overlay.remove();
+            };
+
+            document.getElementById('close-pointage-popup').addEventListener('click', closePopup);
+            overlay.addEventListener('click', closePopup);
+
+            // Fermer avec Escape
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closePopup();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        }
+    };
+
     const calculator = {
         calculate() {
             if (userData === null) return null;
@@ -206,11 +340,12 @@
             if (currentweek > -1) {
                 const cw = weeksMapped[currentweek];
                 for (let i = 0; i < cw.length; i++) {
-                    if (cw[i].length !== 4 && cw[i] !== timesorted[today]) {
-                        alert("ERROR: Vous avez oublié de pointer !");
-                    } else if (cw[i].length === 4) {
-                        sweekwork += (utils.time2seconds(cw[i][1]) - utils.time2seconds(cw[i][0])) + 
-                                   (utils.time2seconds(cw[i][3]) - utils.time2seconds(cw[i][2]));
+                    // Ignorer les jours avec des pointages incomplets pour les calculs
+                    if (cw[i].length === 4 || cw[i] === timesorted[today]) {
+                        if (cw[i].length === 4) {
+                            sweekwork += (utils.time2seconds(cw[i][1]) - utils.time2seconds(cw[i][0])) + 
+                                       (utils.time2seconds(cw[i][3]) - utils.time2seconds(cw[i][2]));
+                        }
                     }
                 }
             }
